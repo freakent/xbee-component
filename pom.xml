@@ -23,29 +23,30 @@
 
   <groupId>freakent.camel.component</groupId>
   <artifactId>xbee-component</artifactId>
-  <packaging>jar</packaging>
+  <packaging>bundle</packaging>
   <version>1.0-SNAPSHOT</version>
 
-  <name>A Camel Component</name>
-  <url>http://www.myorganization.org</url>
+  <name>XBee Camel Component</name>
+  <url>http://www.freakent.co.uk</url>
 
   <dependencies>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-core</artifactId>
-      <version>2.9.0</version>
+      <version>2.8.5</version>
     </dependency>  
     <dependency>
       <groupId>com.rapplogic</groupId>
       <artifactId>xbee-api</artifactId>
       <version>0.9.0</version>
+      <scope>runtime</scope>
     </dependency>  
 
     <!-- for testing -->
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-test</artifactId>
-      <version>2.9.0</version>      
+      <version>2.8.5</version>      
       <scope>test</scope>
     </dependency>
     <!-- logging -->
@@ -73,10 +74,24 @@
     	<scope>runtime</scope>
     </dependency>
 
+    <dependency>
+    	<groupId>org.apache.camel</groupId>
+    	<artifactId>camel-http4</artifactId>
+    	<version>2.8.5</version>
+    </dependency>
   </dependencies>
 
   <build>
     <defaultGoal>install</defaultGoal>
+    <resources>
+      <resource>
+        <filtering>false</filtering>
+        <directory>${basedir}/target/lib</directory>
+        <includes>
+          <include>librxtxSerial.jnilib</include>
+        </includes>
+      </resource>
+    </resources>
 
     <plugins>
       <plugin>
@@ -88,6 +103,40 @@
           <target>1.6</target>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+        <argLine>-d32 -Djava.library.path=${basedir}/target/lib</argLine>
+        	<systemPropertyVariables>
+        		<java.library.path>${basedir}/target/lib</java.library.path>
+        	</systemPropertyVariables>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>test</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+      	<groupId>org.apache.felix</groupId>
+      	<artifactId>maven-bundle-plugin</artifactId>
+      	<version>2.1.0</version>
+      	<extensions>true</extensions>
+      	<configuration>
+      		<instructions>
+				<Export-Package>freakent.camel.component, freakent.xbee</Export-Package>
+				<Import-Package>*</Import-Package>
+				<Embed-Dependency>*;scope=runtime</Embed-Dependency>
+				<Include-Resource>src/main/resources, {maven-resources}</Include-Resource>
+      		</instructions>
+      	</configuration>
+      </plugin>
+      
     </plugins>
   </build>
 </project>

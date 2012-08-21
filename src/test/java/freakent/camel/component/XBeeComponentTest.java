@@ -23,7 +23,7 @@ import org.junit.Test;
 
 public class XBeeComponentTest extends CamelTestSupport {
 
-    @Test
+   // @Test
     public void testXBee() throws Exception {
         MockEndpoint mock = getMockEndpoint("mock:result");
         mock.expectedMinimumMessageCount(1);       
@@ -35,8 +35,8 @@ public class XBeeComponentTest extends CamelTestSupport {
     protected RouteBuilder createRouteBuilder() throws Exception {
         return new RouteBuilder() {
             public void configure() {
-                from("xbee://foo")
-                  .to("xbee://bar")
+                from("xbee:///dev/tty.usbserial-A900UE4F")
+                  .to("xbee:///dev/tty.usbserial-A900UE4F")
                   .to("mock:result");
             }
         };
