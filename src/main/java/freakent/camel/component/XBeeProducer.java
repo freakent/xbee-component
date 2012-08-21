@@ -31,16 +31,17 @@ import com.rapplogic.xbee.util.ByteUtils;
  */
 public class XBeeProducer extends DefaultProducer {
     private static final transient Logger LOG = LoggerFactory.getLogger(XBeeProducer.class);
-    private XBeeEndpoint endpoint;
+    //private XBeeEndpoint endpoint;
     private XBee xbee = null;
 
     public XBeeProducer(XBeeEndpoint endpoint) {
         super(endpoint);
-        this.endpoint = endpoint;
+        //this.endpoint = endpoint;
         this.xbee = endpoint.getXBee();
     }
 
     public void process(Exchange exchange) throws Exception {
+    	LOG.debug("Processing exchange:{}", exchange);
     	String msg = exchange.getIn().getBody().toString();
     	ZNetTxRequest tx = new ZNetTxRequest(XBeeAddress64.BROADCAST, ByteUtils.stringToIntArray(msg));
     	xbee.sendRequest(tx);
