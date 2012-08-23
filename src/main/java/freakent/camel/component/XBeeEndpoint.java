@@ -43,14 +43,14 @@ public class XBeeEndpoint extends DefaultEndpoint {
 
     public XBeeEndpoint(String uri, XBeeComponent component) {
         super(uri, component);
-		LOG.info("Initialising Endpoint " + getEndpointUri());
+		LOG.debug("Initialising Endpoint " + getEndpointUri());
     }
     
     protected void doStart() throws Exception {
     	super.doStart();
-    	LOG.info("***** Starting XBee Endpoint *****");
+    	LOG.debug("***** Starting XBee Endpoint *****");
         try {
-    		LOG.info("Connecting to XBee on port " + uri2serial(getEndpointUri()));
+    		LOG.debug("Connecting to XBee on port " + uri2serial(getEndpointUri()));
 			xbee = new XBee();
 			xbee.open(uri2serial(getEndpointUri()), 9600);
 		} catch (XBeeException e) { 
@@ -67,7 +67,7 @@ public class XBeeEndpoint extends DefaultEndpoint {
     
     protected void doStop() throws Exception {
     	super.doStop();
-    	LOG.info("***** Stopping XBee Endpoint *****");
+    	LOG.debug("***** Stopping XBee Endpoint *****");
     	if(this.xbee.isConnected()) {
     		this.xbee.close();
     	}

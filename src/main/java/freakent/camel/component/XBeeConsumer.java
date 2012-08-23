@@ -46,14 +46,14 @@ public class XBeeConsumer extends DefaultConsumer implements PacketListener {
     
     protected void doStart() throws Exception {
     	super.doStart();
-    	LOG.info("***** Starting XBeeConsumer *****");
+    	LOG.debug("***** Starting XBeeConsumer *****");
     	this.endpoint.getXBee().addPacketListener(this);
 
     }
     
     protected void doStop() throws Exception {
     	super.doStop();
-    	LOG.info("***** Stopping XBeeConsumer *****");
+    	LOG.debug("***** Stopping XBeeConsumer *****");
     	this.endpoint.getXBee().removePacketListener(this);
 
     }
@@ -69,13 +69,13 @@ public class XBeeConsumer extends DefaultConsumer implements PacketListener {
     		int[] in = znrr.getData();
     		String in_str = ByteUtils.toString(in).trim();
     		XBeeAddress64 sender = znrr.getRemoteAddress64();
-    		LOG.info(sender.toString() + "  " + in_str + "  " + in_str.length());
+    		LOG.debug(sender.toString() + "  " + in_str + "  " + in_str.length());
     		processExchange(sender.toString() + "  " + in_str + "  " + in_str.length());
         } else {
         	RemoteAtResponse rar = (RemoteAtResponse)response;
         	String value_str = ByteUtils.toString(rar.getValue()).trim();
-        	LOG.info(rar.toString());
-        	LOG.info(value_str);
+        	LOG.debug(rar.toString());
+        	LOG.debug(value_str);
         	processExchange(value_str);
         }
 		// TODO Auto-generated method stub
@@ -84,15 +84,15 @@ public class XBeeConsumer extends DefaultConsumer implements PacketListener {
 
 	public void respond(ZNetRxResponse response) {
 		int[] in = response.getData();
-		LOG.info("Response:"+response.toString());
+		LOG.debug("Response:"+response.toString());
 		String in_str = ByteUtils.toString(in).trim();
 		XBeeAddress64 sender = response.getRemoteAddress64();
-		LOG.info("Message [{}]", in_str);
+		LOG.debug("Message [{}]", in_str);
 		
 		Map<String, Object> headers = new HashMap<String,Object>();
 		headers.put("xbee.sender", XBeeUtil.XBeeName(sender));
 		headers.put("xbee.receivedAt", new Date());
-		LOG.info("Headers {}", headers);
+		LOG.debug("Headers {}", headers);
 	
 		
 		processExchange(in_str, headers);

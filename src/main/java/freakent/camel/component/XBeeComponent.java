@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 public class XBeeComponent extends DefaultComponent {
     private static final transient Logger LOG = LoggerFactory.getLogger(XBeeComponent.class);
     
-    
     protected Endpoint createEndpoint(String uri, String remaining, Map<String, Object> parameters) throws Exception {
         LOG.info("Creating XBeeEndpoint for {}, {}", uri, parameters);
     	Endpoint endpoint = new XBeeEndpoint(uri, this);
@@ -39,15 +38,14 @@ public class XBeeComponent extends DefaultComponent {
     
     protected void doStart() throws Exception {
     	super.doStart();
-    	LOG.info("***** Starting XBeeComponent *****");
-		LOG.info("java.vm.name = {}", System.getProperty("java.vm.name"));
-		LOG.info("java.library.path = {}", System.getProperty("java.library.path"));
-		LOG.info("System Properties: {}", System.getProperties());
+    	LOG.debug("***** Starting XBeeComponent *****");
+		LOG.debug("java.vm.name = {}", System.getProperty("java.vm.name"));
+		LOG.debug("java.library.path = {}", System.getProperty("java.library.path"));
     }
     
     protected void doStop() throws Exception {
     	super.doStop();
-    	LOG.info("***** Stopping XBeeComponent *****");
+    	LOG.debug("***** Stopping XBeeComponent *****");
     }
     
 }
